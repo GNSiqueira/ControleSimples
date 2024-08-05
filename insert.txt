@@ -1,0 +1,92 @@
+-- Inserindo dados na tabela Categoria
+INSERT INTO Categoria (categoria) VALUES ('Eletrônicos');
+INSERT INTO Categoria (categoria) VALUES ('Roupas');
+INSERT INTO Categoria (categoria) VALUES ('Alimentos');
+
+-- Inserindo dados na tabela Produto
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Smartphone', 1500.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Notebook', 3500.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Camiseta', 50.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Calça Jeans', 120.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Arroz', 20.00, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Feijão', 8.00, 3);
+
+-- Inserindo dados na tabela Inventario
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (100, 1);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (50, 2);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (200, 3);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (150, 4);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (300, 5);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (250, 6);
+
+-- Inserindo mais dados na tabela Produto
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Televisão 32"', 1200.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Tablet', 800.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Smartwatch', 600.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Fone de Ouvido Bluetooth', 150.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Impressora', 450.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Mouse', 50.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Teclado', 100.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Monitor 24"', 700.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Roteador', 200.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Câmera Digital', 1200.00, 1);
+
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Camisa Polo', 80.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Blusa de Moletom', 120.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Vestido', 150.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Saia', 70.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Shorts', 60.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Jaqueta', 200.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Sapato Social', 180.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Tênis Esportivo', 220.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Meias', 15.00, 2);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Cinto de Couro', 50.00, 2);
+
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Leite', 3.50, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Açúcar', 2.80, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Café', 8.00, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Farinha de Trigo', 4.00, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Óleo de Soja', 7.00, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Macarrão', 2.50, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Molho de Tomate', 3.00, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Achocolatado', 6.50, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Feijão Preto', 4.50, 3);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Arroz Integral', 5.00, 3);
+
+-- Inserindo mais dados na tabela Inventario
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (30, 7);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (40, 8);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (50, 9);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (100, 10);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (60, 11);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (200, 12);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (150, 13);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (80, 14);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (70, 15);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (25, 16);
+
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (120, 17);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (90, 18);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (60, 19);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (75, 20);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (80, 21);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (40, 22);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (50, 23);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (70, 24);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (250, 25);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (30, 26);
+
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (300, 27);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (250, 28);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (200, 29);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (180, 30);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (150, 31);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (220, 32);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (170, 33);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (190, 34);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (210, 35);
+INSERT INTO Inventario (qtdProduto, idProduto) VALUES (160, 36);
+
+INSERT INTO Funcionario (nomeFuncionario, telFuncionario, loginFuncionario, senhaFuncionario) 
+VALUES ('admin', 'admin', 'admin', 'admin');
+

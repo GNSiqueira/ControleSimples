@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Simples</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estoque.css') }}">
+    <link rel="icon" href="../static/assets/logo.png" type="image/x-icon">
+</head>
+<body>
+    {% include "componentes/navbar.html" with context %}
+
+    <div class="content">
+        <div class="estoque">
+            <span>Estoque</span>
+            <div class="header_header">
+                <div class="pesquisa">
+                    <input type="search" id="search-bar" placeholder="Pesquisar produto" oninput="buscarProdutos()">
+                    <button type="button" onclick="buscarProdutos()"><img src="{{ url_for('static', filename='assets/pesquisa.png') }}" alt="Icone de Pesquisa"></button>
+                </div>
+                <div class="botao">
+                    <a href="/cadastrar/produto">Cadastrar Produto</a>
+                    <a href="/cadastrar/categoria">Cadastrar Categoria</a>
+                </div>
+            </div>
+            <div class="produto_header">
+                <span>Produtos</span>
+                <div>
+                    <a href="/produto/entrada">Realizar Entrada</a>
+                    <a href="/produto/saida">Realizar Saida</a>
+                </div>
+            </div>
+            <div class="produtos">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-produtos">
+                        {% if produtos %}
+                        {% for produto in produtos %}
+                        <tr>
+                            <td>{{ produto.nome }}</td>
+                            <td>{{ produto.qtd }}</td>
+                            <td>{{ produto.valor }}</td>
+                            <td>
+                                <a href="/produto/remover/{{ produto.id }}">Remover</a>
+                                <a href="/produto/alterar/{{ produto.id }}">Alterar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <span>{{ msg }}</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/scripts/estoque.js"></script>
+</body>
+</html>
+

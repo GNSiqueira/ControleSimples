@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='cadastro-categoria.css') }}"
+    />
+    <link rel="shortcut icon" href="{{url_for( 'static', filename='assets/logo.png' )}}" type="image/x-icon">
+    <title>Controle Simples</title>
+  </head>
+  <body>
+    {% include "componentes/navbar.html" with context %}
+
+    <div class="content">
+      <div class="cadastro">
+        <span class="titulo">Cadastro de Produtos</span>
+        <form action="/cadastrar/categoria" method="post">
+          <!-- categoria -->
+          <label for="categoria" id="label-categoria">Categoria</label>
+          <input type="text" name="categoria" id="categoria" required maxlength="150">
+
+          <span id="msg" unselectable="off">{{ msg }}</span>
+
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+    </div>
+    <script src="../static/scripts/cadastro-categoria.js"></script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Simples</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='entrada.css') }}">
+    <link rel="shortcut icon" href="../static/assets/logo.png" type="image/x-icon">
+</head>
+<body>
+    {% include "componentes/navbar.html" with context %}
+    <div class="content">
+        <div class="entrada">
+            <span class="titulo">Adicionar produto</span>
+            <form action="/produto/entrada" method="post">
+               <!-- produto -->
+              <label for="produto" id="label-produto">Produto</label>
+              <input list="produtos" id="produto" name="produto" value="">
+              <datalist id="produtos">
+              {% if produtos %}
+                  {% for produto in produtos %}
+                      <option value="{{ produto.produto }}" data-ovalue="{{ produto.id }}"></option>
+                  {% endfor %}
+              {% endif %}
+              </datalist>
+              <!-- Campo oculto para ovalue -->
+              <input type="hidden" id="ovalue" name="ovalue">
+
+              <!-- Quantidade do produto -->
+              <label for="qtd" id="label-qtd">Quantidade</label>
+              <input type="number"  name="qtd" id="qtd">
+
+              <span id="msg" unselectable="off">{{ msg }}</span>
+              
+              <input type="hidden" id="carrinhos" name="carrinhos" value="{{ carrinhos }}">
+
+              <div>
+                  <button type="submit">Adicionar</button>
+                  <button formaction="/estoque" formmethod="get">Finalizar</button>
+              </div>
+            </form>
+            <table>
+                <tr>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                    <th>Total</th>
+                    <th>Remover</th>
+                </tr>
+                <tr>
+                    <!-- {%if carrinhos %}
+                    {% for carrinho in carrinhos %}
+                    <td>{{ carrinho.produto }} teste</td>
+                    <td>{{ carrinho.valor }}teste</td>
+                    <td>{{ carrinho.quantidade }}teste</td>
+                    <td>{{ carrinho.total }}teste</td> 
+                    <td><a href="/produto/entrada/remover/{{ carrinho.id }}">remover</a></td>
+                    {% endfor %}
+                    {% endif %} -->
+                    <td>get</td>
+                    <td>get</td>
+                    <td>get</td>
+                    <td>get</td>
+                    <td>get</td>
+                </tr>
+             </table>
+        </div>
+    </div>
+    <script src="../static/scripts/entrada.js"></script>
+</body>
+</html>

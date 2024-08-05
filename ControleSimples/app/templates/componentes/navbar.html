@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='componentes/navbar.css') }}" />
+<link rel="stylesheet" href="../../static/componentes/navbar.css" />
+<nav>
+    <div class="logo">
+        <!-- <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo"> -->
+        <img src="../../static/assets/logo.png" alt="Logo">
+        <span>CSPL</span>
+    </div>
+    <ul>
+        <li><a href="/dashboard" style="background-color: #01bd01;">Dashboard</a></li>
+        <li><a href="/estoque" style="background-color: #02a702;">Estoque</a></li>
+        <li><a href="/produto/entrada" style="background-color: #008300;">Entrada estoque</a></li>
+        <li><a href="/produto/saida" style="background-color: #007600;">Saida estoque</a></li>
+        <li><a href="/historico" style="background-color: rgb(0, 58, 0);">Histórico</a></li>
+    </ul>
+</nav>

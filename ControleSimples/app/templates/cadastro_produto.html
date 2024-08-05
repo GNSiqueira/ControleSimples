@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='cadastro_produto.css') }}"
+    />
+    <link rel="shortcut icon" href="{{url_for( 'static', filename='assets/logo.png' )}}" type="image/x-icon">
+    <title>Controle Simples</title>
+  </head>
+  <body>
+    {% include "componentes/navbar.html" with context %}
+
+    <div class="content">
+      <div class="cadastro">
+        <span class="titulo">Cadastro de Produtos</span>
+        <form action="/cadastrar/produto" method="post">
+           <!-- categoria do produto -->
+          <label for="categoria" id="label-categoria">Categoria</label>
+          <select name="categoria" id="categoria" required>
+            {% if categorias %} {% for categoria in categorias %}
+            <option value="{{ categoria.id }}">
+              {{ categoria.categoria }}
+            </option>
+            {% endfor %} {% endif %}
+          </select>
+          
+          <!-- decrição do produto -->
+          <label for="descricao" id="label-descricao">Descrição Produto</label>
+          <input type="text" name="descricao" id="descricao" required maxlength="200">
+          
+          <!-- Valor produto -->
+          <label for="valor" id="label-valor">Valor</label>
+          <input type="text" pattern="^\d+,\d{0,2}$" name="valor" id="valor">
+
+          <!-- Quantidade do produto -->
+          <label for="qtd" id="label-qtd">Quantidade</label>
+          <input type="number"  name="qtd" id="qtd">
+          <span id="msg" unselectable="off">{{ msg }}</span>
+
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+    </div>
+    <script src="../static/scripts/cadastro_produto.js"></script>
+  </body>
+</html>
