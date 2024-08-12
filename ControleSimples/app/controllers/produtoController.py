@@ -34,3 +34,11 @@ def search_produto_desc(descricao):
         return 1
     else:
         return result
+    
+def search_produto_id(id):
+    result = produtoDao.search_produto_id(id)
+    if result == 1:
+        return 1
+    else:
+        return result
+    

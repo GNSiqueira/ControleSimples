@@ -109,3 +109,111 @@ body {
     color: white;
     user-select: none;
 }
+
+table {
+    margin-top: 30px;
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+table > thead {
+    background-color: #014701;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 15px;
+}
+
+table > thead > tr > th {
+    padding: 15px;
+    text-align: center;
+    border: 0px;
+    border-right: solid 1px #ccc;
+}
+
+table > thead > tr > th:nth-of-type(1) {
+    border-top-left-radius: 20px;
+}
+
+table > thead > tr > th:nth-of-type(5) {
+    border-top-right-radius: 20px;
+    border: 0;
+}
+
+table > tbody > tr > td {
+    padding: 7px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    word-wrap: break-word; /* Quebra a linha se a palavra for muito longa */
+    word-break: break-all; 
+}
+
+table > tbody > tr > td:nth-of-type(1) {
+    display: inline-block;
+}
+
+table > tbody > tr > td:nth-of-type(5) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+table > tbody > tr > td > a, table > tbody > tr > td > form > button{
+    text-decoration: none;
+    color: #001da00;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: rgb(218, 218, 0);
+    color: white;
+    cursor: pointer;
+}
+
+table > tbody > tr > td > a:nth-of-type(1) {
+    background-color: rgb(151, 2, 2);
+    color: white;
+}
+
+table > tbody > tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+/* Estilo para o elemento <select> */
+select {
+    font-size: 25px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #b8b8b8;
+    background-color: white;
+    margin-bottom: 60px;
+    width: 100%; /* Faz o select preencher a largura do contêiner */
+    box-sizing: border-box; /* Garante que o padding e a borda estejam incluídos na largura total */
+    appearance: none; /* Remove a aparência padrão do select em alguns navegadores */
+    -webkit-appearance: none; /* Remove a aparência padrão no WebKit (Chrome, Safari) */
+    -moz-appearance: none; /* Remove a aparência padrão no Firefox */
+}
+
+/* Adiciona um ícone personalizado ao select (opcional) */
+select::-ms-expand {
+    display: none; /* Remove a seta padrão no IE e Edge */
+}
+
+select:focus {
+    outline: none;
+    border-color: #01bd01;
+    box-shadow: 0 0 5px #01bd01;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select option {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -94,3 +94,21 @@ def search_produto_desc(descricao):
     finally:
         cursor.close()
         conexao.desconectar(conn)
+
+def search_produto_id(id):
+    conexao = Conexao()
+    conn = conexao.conectar()
+    try:
+        cursor = conn.cursor()
+        query = "select * from produto where idproduto = %s"
+        cursor.execute(query, (id, ))
+        conn.commit()
+        return cursor.fetchone()
+    except(Exception, Error) as error:
+        conn.rollback()
+        print(error)
+        return 1
+    finally:
+        cursor.close()
+        conexao.desconectar(conn)
+

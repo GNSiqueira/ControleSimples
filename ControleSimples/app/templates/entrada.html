@@ -13,59 +13,88 @@
         <div class="entrada">
             <span class="titulo">Adicionar produto</span>
             <form action="/produto/entrada" method="post">
-               <!-- produto -->
-              <label for="produto" id="label-produto">Produto</label>
-              <input list="produtos" id="produto" name="produto" value="">
-              <datalist id="produtos">
-              {% if produtos %}
-                  {% for produto in produtos %}
-                      <option value="{{ produto.produto }}" data-ovalue="{{ produto.id }}"></option>
-                  {% endfor %}
-              {% endif %}
-              </datalist>
-              <!-- Campo oculto para ovalue -->
-              <input type="hidden" id="ovalue" name="ovalue">
+                <!-- Produto -->
+                <label for="produto" id="label-produto">Produto</label>
+                <input list="produtos" id="produto" name="produto" value="">
+                <datalist id="produtos">
+                    {% if produtos %}
+                        {% for produto in produtos %}
+                            <option value="{{ produto.produto }}" data-ovalue="{{ produto.id }}"></option>
+                        {% endfor %}
+                    {% endif %}
+                </datalist>
+                <input type="hidden" id="ovalue" name="ovalue" value="">
 
-              <!-- Quantidade do produto -->
-              <label for="qtd" id="label-qtd">Quantidade</label>
-              <input type="number"  name="qtd" id="qtd">
+                <!-- Quantidade do produto -->
+                <label for="qtd" id="label-qtd">Quantidade</label>
+                <input type="number" name="qtd" id="qtd" required>
 
-              <span id="msg" unselectable="off">{{ msg }}</span>
-              
-              <input type="hidden" id="carrinhos" name="carrinhos" value="{{ carrinhos }}">
+                <span id="msg">{{ msg }}</span>
 
-              <div>
-                  <button type="submit">Adicionar</button>
-                  <button formaction="/estoque" formmethod="get">Finalizar</button>
-              </div>
+                <!-- Carrinho com as informações de compra -->
+                <input type="hidden" id="carrinhos" name="carrinhos" value='{{ carrinhos }}'>
+
+                <div>
+                    <button type="submit" onclick="teste()">Adicionar</button>
+                    <button formaction="/estoque" formmethod="get">Finalizar</button>
+                </div>
             </form>
             <table>
-                <tr>
-                    <th>Produto</th>
-                    <th>Valor</th>
-                    <th>Quantidade</th>
-                    <th>Total</th>
-                    <th>Remover</th>
-                </tr>
-                <tr>
-                    <!-- {%if carrinhos %}
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Valor</th>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                        <th>Remover</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if carrinhos %}
                     {% for carrinho in carrinhos %}
-                    <td>{{ carrinho.produto }} teste</td>
-                    <td>{{ carrinho.valor }}teste</td>
-                    <td>{{ carrinho.quantidade }}teste</td>
-                    <td>{{ carrinho.total }}teste</td> 
-                    <td><a href="/produto/entrada/remover/{{ carrinho.id }}">remover</a></td>
+                    <tr>
+                        <td>{{ carrinho.produto }}</td>
+                        <td>{{ carrinho.valor }}</td>
+                        <td>{{ carrinho.quantidade }}</td>
+                        <td>{{ carrinho.real }}</td>
+                        <td>
+                            <form action="/produto/entrada/remove" method="post">
+                                <input type="hidden" name="carrinhos" value='{{ carrinhos }}'>
+                                <input type="hidden" name="remover" value="{{ carrinho.id }}">
+                                <button type="submit" class="remove">Remover</button>
+                            </form>
+                        </td>
+                    </tr>
                     {% endfor %}
-                    {% endif %} -->
-                    <td>get</td>
-                    <td>get</td>
-                    <td>get</td>
-                    <td>get</td>
-                    <td>get</td>
-                </tr>
-             </table>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
-    <script src="../static/scripts/entrada.js"></script>
+    <script>
+        document.getElementById('produto').addEventListener('input', function() {
+            var datalist = document.getElementById('produtos');
+            var ovalue = document.getElementById('ovalue');
+            var input = this.value;
+
+            if (datalist && ovalue) {
+                var options = datalist.children;
+                var found = false; // Flag para verificar se encontramos a opção
+
+                for (var i = 0; i < options.length; i++) {
+                    if (options[i].value === input) {
+                        ovalue.value = options[i].getAttribute('data-ovalue');
+                        found = true;
+                        break;
+                    }
+                }
+
+                // Se não encontrou a opção, você pode definir um valor padrão ou limpar o campo
+                if (!found) {
+                    ovalue.value = ''; // Limpa o campo ou defina um valor padrão
+                }
+            }
+        });
+    </script>
 </body>
 </html>
