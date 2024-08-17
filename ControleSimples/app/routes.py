@@ -115,7 +115,7 @@ def cadastrar_produto():
             descricao = request.form.get('descricao')
             qtd = int(request.form.get('qtd'))
             valor = request.form.get('valor')
-            valor = float(valor.replace(",", "."))
+            valor = float(request.form.get('valor').replace('.', '').replace(',', '.'))
 
             retorno = produtoController.cadastrar_produto(descricao, valor, categoria)
             if retorno == 0:
@@ -172,6 +172,8 @@ def entrada():
             idproduto = request.form.get('ovalue')
             carrinhos_str = request.form.get('carrinhos')
             quantidade = float(request.form.get('qtd'))
+            valor = float(request.form.get('valor').replace('.', '').replace(',', '.'))
+            print(valor)
             pesquisa = produtoController.search_produto_id(idproduto)
             if carrinhos_str:
                 carrinhos_str = carrinhos_str.replace("'", '"')
@@ -190,8 +192,8 @@ def entrada():
                 "id": int(idproduto),
                 "produto": pesquisa[1],
                 "quantidade": int(quantidade),
-                "valor": '{:.2f}'.format(float(pesquisa[2])),  # Converte para float
-                "real": '{:.2f}'.format(round(float(pesquisa[2]) * quantidade, 3))
+                "valor": '{:.2f}'.format(valor),
+                "real": '{:.2f}'.format(round(valor * quantidade, 3))
             }
             carrinhos.append(info)
 
@@ -236,12 +238,12 @@ def remover_do_carrinho():
     else:
         return verificar_login()
 
-@app.route('/produto/entrada/end', methods=['POST'])
+@app.route('/produto/entrada/end', methods=['POST', 'GET'])
 def finalizacao_de_carrinho():
     if verificar_login() == 0:
         carrinho = []
         carrinho_str = request.form.get('carrinhos')
-        msg = 'Entrada Finalizada com sucesso!'
+        msg = 'Entrada finalizada com sucesso!'
         produtos = []
         produtos_retorno = produtoController.carregar_produtos()
         if produtos_retorno == 2:
@@ -256,31 +258,34 @@ def finalizacao_de_carrinho():
         if carrinho_str:
             carrinho_str = carrinho_str.replace("'", '"')
 
-        try: 
-            carrinho = json.loads(carrinho_str) if carrinho_str else []
-        except json.JSONDecodeError as e:
-            carrinho = []
-        
-        #criar a movimentação com as informaçãoes de quem fez, a data hora e etc.
-        info_movimentacao = {
-            'idfuncionario': session['funcionario'],
-            'data': data_atual(),
-            'hora': hora_atual(),
-            'tipo': 1
-        }
+        if carrinho_str != '[]':
+            try: 
+                carrinho = json.loads(carrinho_str) if carrinho_str else []
+            except json.JSONDecodeError as e:
+                carrinho = []
+            
+            #criar a movimentação com as informaçãoes de quem fez, a data hora e etc.
+            info_movimentacao = {
+                'idfuncionario': session['funcionario'],
+                'data': data_atual(),
+                'hora': hora_atual(),
+                'tipo': 1
+            }
 
-        movimentacao = movimentacaoController.create_movimentacao(info_movimentacao['data'], info_movimentacao['hora'], info_movimentacao['tipo'], info_movimentacao['idfuncionario'])
+            movimentacao = movimentacaoController.create_movimentacao(info_movimentacao['data'], info_movimentacao['hora'], info_movimentacao['tipo'], info_movimentacao['idfuncionario'])
 
-        #registrar todos os itens do carrinho na movimentação
-        #adicionar os itens ao inventário
-        for item in carrinho:
-            produtoMovimentacaoController.create_produto_movimentacao(movimentacao[0], item['id'], item['quantidade'], item['valor'])
-            reajuste_qtd = inventarioController.search_inventario_idproduto(item['id'])[1] + item['quantidade']
-            inventarioController.update_qtd_inventario(reajuste_qtd, item['id'])
+            #registrar todos os itens do carrinho na movimentação
+            #adicionar os itens ao inventário
+            for item in carrinho:
+                produtoMovimentacaoController.create_produto_movimentacao(movimentacao[0], item['id'], item['quantidade'], item['valor'])
+                reajuste_qtd = inventarioController.search_inventario_idproduto(item['id'])[1] + item['quantidade']
+                inventarioController.update_qtd_inventario(reajuste_qtd, item['id'])
 
-        #remover todos os itens do carrinho
+            #remover todos os itens do carrinho
             carrinhos = []
-
+        else: 
+            msg = 'Carrinho vazio'
+            carrinhos = []
         return render_template(template_name_or_list='entrada.html', produtos=produtos, msg=msg, carrinhos=carrinhos)
     else:
         return verificar_login()
