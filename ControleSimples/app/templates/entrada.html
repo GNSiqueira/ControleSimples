@@ -12,10 +12,10 @@
     <div class="content">
         <div class="entrada">
             <span class="titulo">Adicionar produto</span>
-            <form action="/produto/entrada" method="post">
+            <form action="/produto/entrada" method="post" id="form-principal">
                 <!-- Produto -->
                 <label for="produto" id="label-produto">Produto</label>
-                <input list="produtos" id="produto" name="produto" value="">
+                <input list="produtos" id="produto" name="produto" value="" required>
                 <datalist id="produtos">
                     {% if produtos %}
                         {% for produto in produtos %}
@@ -35,8 +35,8 @@
                 <input type="hidden" id="carrinhos" name="carrinhos" value='{{ carrinhos }}'>
 
                 <div>
-                    <button type="submit" onclick="teste()">Adicionar</button>
-                    <button formaction="/estoque" formmethod="get">Finalizar</button>
+                    <button type="submit">Adicionar</button>
+                    <button type="button" onclick="finalizar()">Finalizar</button>  
                 </div>
             </form>
             <table>
@@ -71,30 +71,6 @@
             </table>
         </div>
     </div>
-    <script>
-        document.getElementById('produto').addEventListener('input', function() {
-            var datalist = document.getElementById('produtos');
-            var ovalue = document.getElementById('ovalue');
-            var input = this.value;
-
-            if (datalist && ovalue) {
-                var options = datalist.children;
-                var found = false; // Flag para verificar se encontramos a opção
-
-                for (var i = 0; i < options.length; i++) {
-                    if (options[i].value === input) {
-                        ovalue.value = options[i].getAttribute('data-ovalue');
-                        found = true;
-                        break;
-                    }
-                }
-
-                // Se não encontrou a opção, você pode definir um valor padrão ou limpar o campo
-                if (!found) {
-                    ovalue.value = ''; // Limpa o campo ou defina um valor padrão
-                }
-            }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='scripts/entrada.js') }}"></script>
 </body>
 </html>

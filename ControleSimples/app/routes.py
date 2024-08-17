@@ -1,11 +1,20 @@
 from app import app
 from flask import render_template, request, redirect, jsonify, session, url_for
-from app.controllers import funcionarioControler, produtoController, inventarioController, categoriaController
+from app.controllers import funcionarioControler, produtoController, inventarioController, categoriaController, movimentacaoController, produtoMovimentacaoController
 import json
 import secrets
-
+import datetime 
 app.secret_key = secrets.token_hex(32)
 
+def data_atual():
+    data = datetime.datetime.now()
+    data_formatada = data.strftime('%d/%m/%Y')
+    return data_formatada
+
+def hora_atual():
+    data = datetime.datetime.now()
+    data_formatada = data.strftime('%H:%M:%S')
+    return data_formatada
 
 def verificar_login():
     if 'funcionario' in session:
@@ -13,12 +22,10 @@ def verificar_login():
     else:
         return redirect(url_for('login'))
 
-
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     session.pop('funcionario', None)
     return redirect(url_for('login'))
-
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -36,14 +43,12 @@ def login():
             return render_template("login.html", msg="Senha ou login invalido")
         return render_template("login.html", msg='Teste')
 
-
 @app.route("/dashboard")
 def dashboard():
     if verificar_login() == 0:
         return render_template("dashboard.html")
     else:
         return verificar_login()
-
 
 @app.route("/estoque")
 def estoque():
@@ -71,7 +76,6 @@ def estoque():
     else:
         return verificar_login()
 
-
 @app.route('/buscar_produtos', methods=['GET'])
 def buscar_produtos():
     if verificar_login() == 0:
@@ -92,7 +96,6 @@ def buscar_produtos():
         return jsonify(resultados)
     else:
         return verificar_login()
-
 
 @app.route("/cadastrar/produto", methods=["GET", "POST"])
 def cadastrar_produto():
@@ -129,7 +132,6 @@ def cadastrar_produto():
     else:
         return verificar_login()
 
-
 @app.route('/cadastrar/categoria', methods=['GET', 'POST'])
 def cadastrar_categoria():
     if verificar_login() == 0:
@@ -148,10 +150,9 @@ def cadastrar_categoria():
     else:
         return verificar_login()
 
-
 @app.route('/produto/entrada', methods=['GET', 'POST'])
 def entrada():
-    if verificar_login() != 0:
+    if verificar_login() == 0:
         msg = 'sucesso'
         produtos = []
         carrinhos = []
@@ -172,8 +173,6 @@ def entrada():
             carrinhos_str = request.form.get('carrinhos')
             quantidade = float(request.form.get('qtd'))
             pesquisa = produtoController.search_produto_id(idproduto)
-            print()
-            print(pesquisa)
             if carrinhos_str:
                 carrinhos_str = carrinhos_str.replace("'", '"')
 
@@ -194,44 +193,94 @@ def entrada():
                 "valor": '{:.2f}'.format(float(pesquisa[2])),  # Converte para float
                 "real": '{:.2f}'.format(round(float(pesquisa[2]) * quantidade, 3))
             }
-            print('{:.2f}'.format(round(float(pesquisa[2]) * quantidade, 3)))
             carrinhos.append(info)
 
         return render_template(template_name_or_list='entrada.html', produtos=produtos, msg=msg, carrinhos=carrinhos)
     else:
         return verificar_login()
 
-
 @app.route('/produto/entrada/remove', methods=['POST'])
 def remover_do_carrinho():
-    msg = 'sucesso'
-    produtos = []
-    produtos_retorno = produtoController.carregar_produtos()
-    if produtos_retorno == 2:
-        msg = 'Nenhum produto encontrado!'
-    elif produtos_retorno == 1:
-        msg = 'Erro ao carregar produto!'
+    if verificar_login() == 0:
+        msg = 'sucesso'
+        produtos = []
+        produtos_retorno = produtoController.carregar_produtos()
+        if produtos_retorno == 2:
+            msg = 'Nenhum produto encontrado!'
+        elif produtos_retorno == 1:
+            msg = 'Erro ao carregar produto!'
+        else:
+            for produto in produtos_retorno:
+                p = {'id': produto[0], 'produto': produto[1]}
+                produtos.append(p)
+
+        carrinhos_str = request.form.get('carrinhos')
+        idproduto = request.form.get('remover')
+
+        if carrinhos_str:
+            carrinhos_str = carrinhos_str.replace("'", '"')
+
+        # Decodifica a string carrinhos_str em uma lista de dicionários
+        try:
+            novos_carrinhos = json.loads(carrinhos_str) if carrinhos_str else []
+        except json.JSONDecodeError as e:
+            novos_carrinhos = []
+
+        carrinhos = []
+        # Adiciona cada item novo ao carrinho
+        for p in novos_carrinhos:
+            if p['id'] != int(idproduto):
+                carrinhos.append(p)
+
+        return render_template(template_name_or_list='entrada.html', produtos=produtos, msg=msg, carrinhos=carrinhos)
     else:
-        for produto in produtos_retorno:
-            p = {'id': produto[0], 'produto': produto[1]}
-            produtos.append(p)
-    carrinhos_str = request.form.get('carrinhos')
-    idproduto = request.form.get('remover')
+        return verificar_login()
 
-    if carrinhos_str:
-        carrinhos_str = carrinhos_str.replace("'", '"')
+@app.route('/produto/entrada/end', methods=['POST'])
+def finalizacao_de_carrinho():
+    if verificar_login() == 0:
+        carrinho = []
+        carrinho_str = request.form.get('carrinhos')
+        msg = 'Entrada Finalizada com sucesso!'
+        produtos = []
+        produtos_retorno = produtoController.carregar_produtos()
+        if produtos_retorno == 2:
+            msg = 'Nenhum produto encontrado!'
+        elif produtos_retorno == 1:
+            msg = 'Erro ao carregar produto!'
+        else:
+            for produto in produtos_retorno:
+                p = {'id': produto[0], 'produto': produto[1]}
+                produtos.append(p)
+        
+        if carrinho_str:
+            carrinho_str = carrinho_str.replace("'", '"')
 
-    # Decodifica a string carrinhos_str em uma lista de dicionários
-    try:
-        novos_carrinhos = json.loads(carrinhos_str) if carrinhos_str else []
-    except json.JSONDecodeError as e:
-        novos_carrinhos = []
+        try: 
+            carrinho = json.loads(carrinho_str) if carrinho_str else []
+        except json.JSONDecodeError as e:
+            carrinho = []
+        
+        #criar a movimentação com as informaçãoes de quem fez, a data hora e etc.
+        info_movimentacao = {
+            'idfuncionario': session['funcionario'],
+            'data': data_atual(),
+            'hora': hora_atual(),
+            'tipo': 1
+        }
 
-    carrinhos = []
-    print(novos_carrinhos)
-    # Adiciona cada item novo ao carrinho
-    for p in novos_carrinhos:
-        if p['id'] != int(idproduto):
-            carrinhos.append(p)
+        movimentacao = movimentacaoController.create_movimentacao(info_movimentacao['data'], info_movimentacao['hora'], info_movimentacao['tipo'], info_movimentacao['idfuncionario'])
 
-    return render_template(template_name_or_list='entrada.html', produtos=produtos, msg=msg, carrinhos=carrinhos)
+        #registrar todos os itens do carrinho na movimentação
+        #adicionar os itens ao inventário
+        for item in carrinho:
+            produtoMovimentacaoController.create_produto_movimentacao(movimentacao[0], item['id'], item['quantidade'], item['valor'])
+            reajuste_qtd = inventarioController.search_inventario_idproduto(item['id'])[1] + item['quantidade']
+            inventarioController.update_qtd_inventario(reajuste_qtd, item['id'])
+
+        #remover todos os itens do carrinho
+            carrinhos = []
+
+        return render_template(template_name_or_list='entrada.html', produtos=produtos, msg=msg, carrinhos=carrinhos)
+    else:
+        return verificar_login()
