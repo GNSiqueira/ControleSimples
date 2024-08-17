@@ -3,7 +3,7 @@ CREATE TABLE Categoria (
 	categoria varchar(150) not null
 );
 
-create table Produto (
+CREATE TABLE Produto (
 	idProduto serial primary key not null, 
 	descProduto varchar(200) not null, 
 	valorProduto numeric(10, 2) not null, 
@@ -11,14 +11,14 @@ create table Produto (
 	foreign key (idCategoria) references Categoria (idCategoria)
 );
 
-create table Inventario (
+CREATE TABLE Inventario (
 	idInventario serial primary key not null, 
 	qtdProduto integer not null, 
 	idProduto integer not null,
 	foreign key (idProduto) references Produto (idProduto)
 );
 
-create table Funcionario (
+CREATE TABLE Funcionario (
 	idFuncionario serial primary key not null,
 	nomeFuncionario varchar(100) not null, 
 	telFuncionario varchar(15) not null, 
@@ -26,20 +26,22 @@ create table Funcionario (
 	senhaFuncionario varchar(150) not null
 );
 
-create table Movimentacao (
+CREATE TABLE Movimentacao (
 	idMovimentacao serial primary key not null, 
 	dataMovimentacao date not null,
 	horaMovimentacao time not null,
-	tipoMovimetacao integer not null,
+	tipoMovimentacao integer not null,
 	idFuncionario integer not null,
 	foreign key (idFuncionario) references Funcionario (idFuncionario)
 );
 
-create table MovimentoProduto (
+CREATE TABLE MovimentoProduto (
 	idMovimentacao integer not null,
 	idProduto integer not null,
 	qtdProduto integer not null,  
 	valorProduto numeric(10, 2) not null,
 	foreign key (idMovimentacao) references Movimentacao (idMovimentacao),
-	foreign key (idProduto) references Produto (idProduto)
+	foreign key (idProduto) references Produto (idProduto),
+	PRIMARY KEY (idMovimentacao, idProduto)  -- Definindo chave primária composta
 );
+

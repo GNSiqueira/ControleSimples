@@ -1,3 +1,53 @@
+DROP TABLE MovimentoProduto, Movimentacao, Funcionario, Inventario, Produto, Categoria;
+
+CREATE TABLE Categoria (
+	idCategoria serial primary key not null,
+	categoria varchar(150) not null
+);
+
+CREATE TABLE Produto (
+	idProduto serial primary key not null, 
+	descProduto varchar(200) not null, 
+	valorProduto numeric(10, 2) not null, 
+	idCategoria integer not null, 
+	foreign key (idCategoria) references Categoria (idCategoria)
+);
+
+CREATE TABLE Inventario (
+	idInventario serial primary key not null, 
+	qtdProduto integer not null, 
+	idProduto integer not null,
+	foreign key (idProduto) references Produto (idProduto)
+);
+
+CREATE TABLE Funcionario (
+	idFuncionario serial primary key not null,
+	nomeFuncionario varchar(100) not null, 
+	telFuncionario varchar(15) not null, 
+	loginFuncionario varchar(150) not null, 
+	senhaFuncionario varchar(150) not null
+);
+
+CREATE TABLE Movimentacao (
+	idMovimentacao serial primary key not null, 
+	dataMovimentacao date not null,
+	horaMovimentacao time not null,
+	tipoMovimentacao integer not null,
+	idFuncionario integer not null,
+	foreign key (idFuncionario) references Funcionario (idFuncionario)
+);
+
+CREATE TABLE MovimentoProduto (
+	idMovimentacao integer not null,
+	idProduto integer not null,
+	qtdProduto integer not null,  
+	valorProduto numeric(10, 2) not null,
+	foreign key (idMovimentacao) references Movimentacao (idMovimentacao),
+	foreign key (idProduto) references Produto (idProduto),
+	PRIMARY KEY (idMovimentacao, idProduto)  -- Definindo chave primária composta
+);
+
+
 -- Inserindo dados na tabela Categoria
 INSERT INTO Categoria (categoria) VALUES ('Eletrônicos');
 INSERT INTO Categoria (categoria) VALUES ('Roupas');
