@@ -1,9 +1,7 @@
 from app import app
 from flask import render_template, request, redirect, jsonify, session, url_for
 from app.controllers import funcionarioControler, produtoController, inventarioController, categoriaController, movimentacaoController, produtoMovimentacaoController
-import json
-import secrets
-import datetime 
+import json, secrets, datetime
 app.secret_key = secrets.token_hex(32)
 
 def data_atual():
@@ -239,7 +237,7 @@ def remover_do_carrinho():
         return verificar_login()
 
 @app.route('/produto/entrada/end', methods=['POST', 'GET'])
-def finalizacao_de_carrinho():
+def finalizacao_de_carrinho_entrada():
     if verificar_login() == 0:
         carrinho = []
         carrinho_str = request.form.get('carrinhos')
@@ -378,6 +376,32 @@ def saida_remover():
                 carrinho.append(item)
 
         return render_template('saida.html', carrinhos = carrinho, msg = 'sucesso', produtos = produtos)
+
+    else:
+        return verificar_login()
+    
+@app.route('/produto/saida/end', methods=['POST'])
+def finalizacao_de_carrinho_saida():
+    if verificar_login() == 0:
+        carrinho = request.form.get('carrinho')
+        if carrinho:
+            carrinho = carrinho.replace("'", '"')
+        try:
+            carrinho = json.loads(carrinho) if carrinho else []
+        except json.JSONDecodeError:
+            carrinho = []
+
+        info = {
+            'data' : data_atual(),
+            'hora' : hora_atual(),
+            'idfuncionario' : session['funcionario'],
+            
+        }
+
+        # movimentacao = movimentacaoController.create_movimentacao(info.data)
+
+        return redirect(url_for('saida'))
+
 
     else:
         return verificar_login()
