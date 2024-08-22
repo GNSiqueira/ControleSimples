@@ -70,14 +70,14 @@ INSERT INTO Inventario (qtdProduto, idProduto) VALUES (300, 5);
 INSERT INTO Inventario (qtdProduto, idProduto) VALUES (250, 6);
 
 -- Inserindo mais dados na tabela Produto
-INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Televisão 32"', 1200.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Televisão 32', 1200.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Tablet', 800.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Smartwatch', 600.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Fone de Ouvido Bluetooth', 150.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Impressora', 450.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Mouse', 50.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Teclado', 100.00, 1);
-INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Monitor 24"', 700.00, 1);
+INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Monitor 24', 700.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Roteador', 200.00, 1);
 INSERT INTO Produto (descProduto, valorProduto, idCategoria) VALUES ('Câmera Digital', 1200.00, 1);
 
