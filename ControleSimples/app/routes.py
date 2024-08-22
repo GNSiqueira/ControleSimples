@@ -29,6 +29,7 @@ def logout():
 
 @app.route("/", methods=["GET", "POST"])
 def login():
+    session['funcionario'] = 1
     if 'funcionario' in session:
         return redirect(url_for('dashboard'))
     else:
@@ -173,7 +174,6 @@ def entrada():
             carrinhos_str = request.form.get('carrinhos')
             quantidade = float(request.form.get('qtd'))
             valor = float(request.form.get('valor').replace('.', '').replace(',', '.'))
-            print(valor)
             pesquisa = produtoController.search_produto_id(idproduto)
             if carrinhos_str:
                 carrinhos_str = carrinhos_str.replace("'", '"')
@@ -287,5 +287,97 @@ def finalizacao_de_carrinho():
             msg = 'Carrinho vazio'
             carrinhos = []
         return render_template(template_name_or_list='entrada.html', produtos=produtos, msg=msg, carrinhos=carrinhos)
+    else:
+        return verificar_login()
+    
+@app.route('/produto/saida', methods=['POST', 'GET'])
+def saida():
+    if verificar_login() == 0:
+        produtos = []
+        produtos_retorno = produtoController.carregar_produtos()
+        if produtos_retorno == 2:
+            msg = 'Nenhum produto encontrado!'
+        elif produtos_retorno == 1:
+            msg = 'Erro ao carregar produto!'
+        else:
+            for produto in produtos_retorno:
+                p = {'id': produto[0], 'produto': produto[1]}
+                produtos.append(p)
+        carrinho = []
+        msg = 'sucesso'
+        if request.method == 'POST':
+            quantidade = int(request.form.get('qtd'))
+            idproduto = request.form.get('ovalue')
+
+            inventario = inventarioController.search_inventario_idproduto(idproduto)
+            if inventario[1] < quantidade:
+                return render_template('saida.html', produtos = produtos, carrinhos = carrinho, msg = "Quantidade insuficiente!")
+
+            carrinho_str = request.form.get('carrinhos')
+
+            if carrinho_str:
+                carrinho_str = carrinho_str.replace("'", '"')
+            
+            try:
+                carrinho = json.loads(carrinho_str) if carrinho_str else []
+            except json.JSONDecodeError as e:
+                carrinho = [] 
+
+            for c in range(len(carrinho)):
+                if int(carrinho[c]["id"]) == int(idproduto):
+                    result = carrinho[c]["quantidade"] + quantidade
+                    if inventario[1] < result:
+                        return render_template('saida.html', produtos = produtos, carrinhos = carrinho, msg = "Quantidade insuficiente!")
+                    carrinho[c]["quantidade"] += quantidade
+                    return render_template('saida.html', produtos = produtos, carrinhos = carrinho, msg = 'sucesso')
+
+
+            busca_produto = produtoController.search_produto_id(idproduto)
+            
+            info = {
+                "id": int(idproduto),
+                "produto": busca_produto[1],
+                "quantidade": int(quantidade),
+                "valor": '{:.2f}'.format(busca_produto[2]),
+                "real": '{:.2f}'.format(round(busca_produto[2] * quantidade, 3))
+            }
+
+
+            carrinho.append(info)
+
+        return render_template('saida.html', produtos = produtos, carrinhos = carrinho, msg = msg)
+    else:
+        return verificar_login()
+    
+@app.route("/produto/saida/remove", methods=['POST'])
+def saida_remover():
+    if verificar_login() == 0:
+        produtos = []
+        produtos_retorno = produtoController.carregar_produtos()
+        if produtos_retorno == 2:
+            msg = 'Nenhum produto encontrado!'
+        elif produtos_retorno == 1:
+            msg = 'Erro ao carregar produto!'
+        else:
+            for produto in produtos_retorno:
+                p = {'id': produto[0], 'produto': produto[1]}
+                produtos.append(p)
+        idproduto = request.form.get('remover')
+        carrinho = request.form.get('carrinho')
+        
+        if carrinho:
+            carrinho = carrinho.replace("'", '"')
+        try:
+            carrinho = json.loads(carrinho) if carrinho else []
+        except json.JSONDecodeError:
+            carrinho = []
+        carrinho_para_remover = carrinho
+        carrinho = []
+        for item in carrinho_para_remover:
+            if int(item['id']) != int(idproduto):
+                carrinho.append(item)
+
+        return render_template('saida.html', carrinhos = carrinho, msg = 'sucesso', produtos = produtos)
+
     else:
         return verificar_login()

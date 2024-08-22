@@ -5,7 +5,7 @@ class Movimentacao:
         self.__hora = hora
         self.__idfuncionario = idfuncionario
         self.__tipo = tipo
-
+    
     @property
     def id(self):
         return self.__id

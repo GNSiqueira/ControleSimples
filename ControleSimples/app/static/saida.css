@@ -1,0 +1,219 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+}
+
+.content {
+    width: 100%;
+    margin-left: 16%;
+    height: 100vh;
+}
+
+
+.saida{
+    display: flex;
+    flex-direction: column;
+    margin: 2%;
+}
+
+.saida > .titulo {
+    font-size: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    margin-left: 5%;
+}
+
+.saida > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 20%;
+    padding-left: 2%;
+    padding-top: 30px;
+    
+}
+
+.saida > form > label {
+    font-size: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+}
+
+.saida > form > input, select {
+    font-size: 25px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+    padding-inline: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    border: 1px solid #b8b8b8;
+    margin-bottom: 30px;
+}
+
+.saida > form > input:focus, select:focus {
+    outline: none;
+    border: 1px solid #01bd01;
+    box-shadow: 0 0 5px #01bd01;
+    transition: 0.3s;
+}
+
+.saida > form > input, select {
+    background-color: white;
+}
+
+.saida > form > div {
+    text-align: end;
+}
+
+.saida > form > div > button {
+    background-color: #01bd01;
+    color: white;
+    font-size: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+    padding-inline: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    border: 1px solid #b8b8b8;
+    margin-bottom: 30px;
+    cursor: pointer;
+    width: 20%;
+    border: 0;
+}
+
+.saida > form > div > button:nth-of-type(2){
+    background-color: #007400;
+}
+
+.saida > form > div > button:hover {
+    box-shadow: 0 0 3px #00ff00;
+}
+
+.saida > form > span {
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+    align-self: center;
+    color: white;
+    user-select: none;
+}
+
+table {
+    margin-top: 30px;
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+table > thead {
+    background-color: #014701;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 15px;
+}
+
+table > thead > tr > th {
+    padding: 15px;
+    text-align: center;
+    border: 0px;
+    border-right: solid 1px #ccc;
+}
+
+table > thead > tr > th:nth-of-type(1) {
+    border-top-left-radius: 20px;
+}
+
+table > thead > tr > th:nth-of-type(5) {
+    border-top-right-radius: 20px;
+    border: 0;
+}
+
+table > tbody > tr > td {
+    padding: 7px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    word-wrap: break-word; /* Quebra a linha se a palavra for muito longa */
+    word-break: break-all; 
+}
+
+table > tbody > tr > td:nth-of-type(1) {
+    display: inline-block;
+}
+
+table > tbody > tr > td:nth-of-type(5) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+table > tbody > tr > td > form > button{
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: rgb(218, 44, 0);
+    color: white;
+    cursor: pointer;
+    border: 0;
+}
+
+table > tbody > tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+/* Estilo para o elemento <select> */
+select {
+    font-size: 25px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #b8b8b8;
+    background-color: white;
+    margin-bottom: 60px;
+    width: 100%; /* Faz o select preencher a largura do contêiner */
+    box-sizing: border-box; /* Garante que o padding e a borda estejam incluídos na largura total */
+    appearance: none; /* Remove a aparência padrão do select em alguns navegadores */
+    -webkit-appearance: none; /* Remove a aparência padrão no WebKit (Chrome, Safari) */
+    -moz-appearance: none; /* Remove a aparência padrão no Firefox */
+}
+
+/* Adiciona um ícone personalizado ao select (opcional) */
+select::-ms-expand {
+    display: none; /* Remove a seta padrão no IE e Edge */
+}
+
+select:focus {
+    outline: none;
+    border-color: #01bd01;
+    box-shadow: 0 0 5px #01bd01;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select option {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#msg {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    align-self: center;
+    margin-bottom: 20px;
+}

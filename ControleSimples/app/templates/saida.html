@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle Simples</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='entrada.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='saida.css') }}">
     <link rel="shortcut icon" href="../static/assets/logo.png" type="image/x-icon">
 </head>
 <body>
     {% include "componentes/navbar.html" with context %}
     <div class="content">
-        <div class="entrada">
-            <span class="titulo">Adicionar produto</span>
-            <form action="/produto/entrada" method="post" id="form-principal">
+        <div class="saida">
+            <span class="titulo">Saida de Produtos</span>
+            <form action="/produto/saida" method="post" id="form-principal">
                 <!-- Produto -->
                 <label for="produto" id="label-produto">Produto</label>
                 <input list="produtos" id="produto" name="produto" value="" required>
@@ -58,8 +58,8 @@
                         <td>{{ carrinho.quantidade }}</td>
                         <td>{{ carrinho.real }}</td>
                         <td>
-                            <form action="/produto/entrada/remove" method="post">
-                                <input type="hidden" name="carrinhos" value='{{ carrinhos }}'>
+                            <form action="/produto/saida/remove" method="post">
+                                <input type="hidden" name="carrinho" value='{{ carrinhos }}'>
                                 <input type="hidden" name="remover" value="{{ carrinho.id }}">
                                 <button type="submit" class="remove">Remover</button>
                             </form>
@@ -71,6 +71,6 @@
             </table>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='scripts/entrada.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/saida.js') }}"></script>
 </body>
 </html>
