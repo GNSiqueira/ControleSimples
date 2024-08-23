@@ -29,7 +29,7 @@ def logout():
 def login():
     session['funcionario'] = 1
     if 'funcionario' in session:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('estoque'))
     else:
         if request.method == "POST":
             login = request.form.get("login")
@@ -41,13 +41,6 @@ def login():
                 return redirect(url_for('dashboard'))
             return render_template("login.html", msg="Senha ou login invalido")
         return render_template("login.html", msg='Teste')
-
-@app.route("/dashboard")
-def dashboard():
-    if verificar_login() == 0:
-        return render_template("dashboard.html")
-    else:
-        return verificar_login()
 
 @app.route("/estoque")
 def estoque():
