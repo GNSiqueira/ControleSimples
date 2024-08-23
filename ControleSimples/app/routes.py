@@ -360,6 +360,7 @@ def saida_remover():
             for produto in produtos_retorno:
                 p = {'id': produto[0], 'produto': produto[1]}
                 produtos.append(p)
+
         idproduto = request.form.get('remover')
         carrinho = request.form.get('carrinho')
         
@@ -383,25 +384,51 @@ def saida_remover():
 @app.route('/produto/saida/end', methods=['POST'])
 def finalizacao_de_carrinho_saida():
     if verificar_login() == 0:
-        carrinho = request.form.get('carrinho')
-        if carrinho:
-            carrinho = carrinho.replace("'", '"')
-        try:
-            carrinho = json.loads(carrinho) if carrinho else []
-        except json.JSONDecodeError:
-            carrinho = []
+        carrinho = []
+        carrinho_str = request.form.get('carrinhos')
+        msg = 'Saida finalizada com sucesso!'
+        produtos = []
+        produtos_retorno = produtoController.carregar_produtos()
+        if produtos_retorno == 2:
+            msg = 'Nenhum produto encontrado!'
+        elif produtos_retorno == 1:
+            msg = 'Erro ao carregar produto!'
+        else:
+            for produto in produtos_retorno:
+                p = {'id': produto[0], 'produto': produto[1]}
+                produtos.append(p)
+        
+        if carrinho_str:
+            carrinho_str = carrinho_str.replace("'", '"')
 
-        info = {
-            'data' : data_atual(),
-            'hora' : hora_atual(),
-            'idfuncionario' : session['funcionario'],
+        if carrinho_str != '[]':
+            try: 
+                carrinho = json.loads(carrinho_str) if carrinho_str else []
+            except json.JSONDecodeError as e:
+                carrinho = []
             
-        }
+            #criar a movimentação com as informaçãoes de quem fez, a data hora e etc.
+            info_movimentacao = {
+                'idfuncionario': session['funcionario'],
+                'data': data_atual(),
+                'hora': hora_atual(),
+                'tipo': 2
+            }
 
-        # movimentacao = movimentacaoController.create_movimentacao(info.data)
+            movimentacao = movimentacaoController.create_movimentacao(info_movimentacao['data'], info_movimentacao['hora'], info_movimentacao['tipo'], info_movimentacao['idfuncionario'])
 
-        return redirect(url_for('saida'))
+            #registrar todos os itens do carrinho na movimentação
+            #adicionar os itens ao inventário
+            for item in carrinho:
+                produtoMovimentacaoController.create_produto_movimentacao(movimentacao[0], item['id'], item['quantidade'], item['valor'])
+                reajuste_qtd = inventarioController.search_inventario_idproduto(item['id'])[1] - item['quantidade']
+                inventarioController.update_qtd_inventario(reajuste_qtd, item['id'])
 
-
+            #remover todos os itens do carrinho
+            carrinhos = []
+        else: 
+            msg = 'Carrinho vazio'
+            carrinhos = []
+        return render_template(template_name_or_list='saida.html', produtos=produtos, msg=msg, carrinhos=carrinhos)
     else:
         return verificar_login()
